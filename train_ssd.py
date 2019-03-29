@@ -87,6 +87,7 @@ def main():
     parser.add_argument('--save_step', default=5000, type=int, help='Save checkpoint every save_step')
     parser.add_argument('--eval_step', default=5000, type=int, help='Evaluate dataset every eval_step, disabled when eval_step < 0')
     parser.add_argument('--use_tensorboard', default=True, type=str2bool)
+    parser.add_argument('--output', default="output", type=str)
     parser.add_argument(
         "--skip-test",
         dest="skip_test",
@@ -131,6 +132,7 @@ def main():
     if not args.skip_test:
         logger.info('Start evaluating...')
         torch.cuda.empty_cache()  # speed up evaluating after training finished
+        cfg.OUTPUT_DIR=args.output
         do_evaluation(cfg, model, cfg.OUTPUT_DIR, distributed=args.distributed)
 
 

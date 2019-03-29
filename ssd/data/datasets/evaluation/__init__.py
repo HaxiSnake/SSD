@@ -1,6 +1,7 @@
-from ssd.data.datasets import VOCDataset, COCODataset
+from ssd.data.datasets import VOCDataset, COCODataset, CLADataset
 from .coco import coco_evaluation
 from .voc import voc_evaluation
+from .voc import voc_evaluation as cla_evaluation
 
 
 class EvaluationMetrics:
@@ -9,6 +10,8 @@ class EvaluationMetrics:
             self._parse_pascal_eval_metrics(evaluation_result)
         elif isinstance(dataset, COCODataset):
             self._parse_coco_eval_metrics(evaluation_result)
+        elif isinstance(dataset, CLADataset):
+            self._parse_pascal_eval_metrics(evaluation_result)
 
     def _parse_coco_eval_metrics(self, evaluation_result):
         self.info = {'AP_IoU=0.50:0.95': evaluation_result.stats[0],
@@ -37,6 +40,8 @@ def evaluate(dataset, predictions, output_dir):
     )
     if isinstance(dataset, VOCDataset):
         evaluation_result = voc_evaluation(**args)
+    elif isinstance(dataset, CLADataset):
+        evaluation_result = cla_evaluation(**args)
     elif isinstance(dataset, COCODataset):
         evaluation_result = coco_evaluation(**args)
     else:

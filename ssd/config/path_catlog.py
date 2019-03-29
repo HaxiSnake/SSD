@@ -4,6 +4,22 @@ import os
 class DatasetCatalog:
     DATA_DIR = 'datasets'
     DATASETS = {
+        'cla_train': {
+            "data_dir": "CLA",
+            "split": "train"
+        },
+        'cla_val': {
+            "data_dir": "CLA",
+            "split": "val"
+        },
+        'cla_trainval': {
+            "data_dir": "CLA",
+            "split": "trainval"
+        },
+        'cla_test': {
+            "data_dir": "CLA",
+            "split": "test"
+        },
         'voc_2007_train': {
             "data_dir": "VOC2007",
             "split": "train"
@@ -78,5 +94,16 @@ class DatasetCatalog:
                 ann_file=os.path.join(coco_root, attrs["ann_file"]),
             )
             return dict(factory="COCODataset", args=args)
+        elif "cla" in name:
+            cla_root = DatasetCatalog.DATA_DIR
+            if 'CLA_ROOT' in os.environ:
+                cla_root = os.environ['CLA_ROOT']
+
+            attrs = DatasetCatalog.DATASETS[name]
+            args = dict(
+                data_dir=os.path.join(cla_root, attrs["data_dir"]),
+                split=attrs["split"],
+            )
+            return dict(factory="CLADataset", args=args)
 
         raise RuntimeError("Dataset not available: {}".format(name))

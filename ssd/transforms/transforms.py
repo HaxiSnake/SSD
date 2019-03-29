@@ -100,7 +100,8 @@ class ToPercentCoords(object):
         boxes[:, 2] /= width
         boxes[:, 1] /= height
         boxes[:, 3] /= height
-
+#         if((boxes>1).any()):
+#             print(boxes,image.shape)
         return image, boxes, labels
 
 

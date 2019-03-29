@@ -31,11 +31,19 @@ class MultiBoxLoss(nn.Module):
             mask = box_utils.hard_negative_mining(loss, labels, self.neg_pos_ratio)
 
         confidence = confidence[mask, :]
+#         print("confidence:",confidence)
+#         print("labels",labels[mask])
         classification_loss = F.cross_entropy(confidence.view(-1, num_classes), labels[mask], reduction='sum')
 
         pos_mask = labels > 0
         predicted_locations = predicted_locations[pos_mask, :].view(-1, 4)
         gt_locations = gt_locations[pos_mask, :].view(-1, 4)
+#         print("predicted_locations",predicted_locations)
+#         print(predicted_locations.shape)
+#         print("gt_locations",gt_locations)
+#         print(gt_locations.shape)
         smooth_l1_loss = F.smooth_l1_loss(predicted_locations, gt_locations, reduction='sum')
         num_pos = gt_locations.size(0)
+#         info="s_loss is %f c_loss is %f \n num_pos is %d"%(smooth_l1_loss,classification_loss,num_pos)
+#         print(info)
         return smooth_l1_loss / num_pos, classification_loss / num_pos
