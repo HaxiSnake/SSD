@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import xml.etree.ElementTree as ET 
 import logging
 import cv2
@@ -52,7 +53,8 @@ def extract_voc(rootpath,classname,output_rootpath,prefix='unknownvoc'):
     for fname in fnames:
         for line in open(fname):
             line=line.strip()
-            name, ret = line[:6],line[6:]
+            strlist = line.split(' ')
+            name, ret = strlist[0],line[1]
             pic_name=name+".jpg"
             xml_name=name+".xml"
             ret=int(ret)
