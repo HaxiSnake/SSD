@@ -126,13 +126,13 @@ def main():
         config_str = "\n" + cf.read()
         logger.info(config_str)
     logger.info("Running with config:\n{}".format(cfg))
-
+#     cfg.OUTPUT_DIR=args.output
     model = train(cfg, args)
 
     if not args.skip_test:
         logger.info('Start evaluating...')
         torch.cuda.empty_cache()  # speed up evaluating after training finished
-        cfg.OUTPUT_DIR=args.output
+#         cfg.OUTPUT_DIR=args.output
         do_evaluation(cfg, model, cfg.OUTPUT_DIR, distributed=args.distributed)
 
 

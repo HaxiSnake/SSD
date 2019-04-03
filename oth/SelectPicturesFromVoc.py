@@ -53,17 +53,17 @@ def extract_voc(rootpath,classname,output_rootpath,prefix='unknownvoc'):
     for fname in fnames:
         for line in open(fname):
             line=line.strip()
-            strlist = line.split(' ')
-            name, ret = strlist[0],line[1]
+            strlist = line.split()
+            name, ret = strlist[0],strlist[1]
             pic_name=name+".jpg"
             xml_name=name+".xml"
             ret=int(ret)
             if(ret==1):
                 print(pic_name)
-                new_picname=prefix + pic_name
+                new_picname=prefix +'_'+ pic_name
                 order = "cp %s %s"%( osp.join(picture_path , pic_name), osp.join(o_picture_path,new_picname))
                 os.system(order)
-                new_xmlname=prefix + xml_name
+                new_xmlname=prefix +'_'+ xml_name
                 select_object(osp.join(xml_path , xml_name),osp.join(o_xml_path,new_xmlname),classname=classname)
 
 if __name__ == "__main__":
